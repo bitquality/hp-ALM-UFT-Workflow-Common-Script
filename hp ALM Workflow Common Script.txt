@@ -1,0 +1,38 @@
+
+Sub Attachment_New(Attachment)
+  'Use ActiveModule and ActiveDialogName to get
+  'the current context.
+  On Error Resume Next
+        If ActiveModule = "Test Plan" AND Test_Fields("TS_TYPE").Value = "QUICKTEST_TEST" Then
+          'MsgBox "I am calling from New method with " & Attachment.FileName
+          Attachment.Load True,""
+          ReadAutomatedTests_M  Attachment.FileName
+          set fileObject = CreateObject("Scripting.FileSystemObject")
+          if fileObject.FileExists( Attachment.FileName) then
+             fileObject.DeleteFile Attachment.FileName
+          end if
+          set fileObject = Nothing
+        End If
+        Attachment_New = True
+  On Error GoTo 0
+ 
+End Sub
+ 
+Function Attachment_CanPost(Attachment)
+  'Use ActiveModule and ActiveDialogName to get
+  'the current context.
+  On Error Resume Next
+ 
+  If  ActiveModule = "Test Plan" AND Test_Fields("TS_TYPE").Value = "QUICKTEST_TEST" Then
+     'Msgbox "Reading manual numbers"
+     'ReadALMTestPlanTests_M
+     'Msgbox "TDConnection.ProjectName"
+     'Msgbox TDConnection.ProjectName
+     'Msgbox TDConnection.DomainName
+     'MsgBox "upload/canpost method invoked" & Attachment.FileName
+     ReadAutomatedTests_M  Attachment.FileName
+  End If
+     'Msgbox "DefaultRes " & DefaultRes
+  Attachment_CanPost = True 'DefaultRes
+  On Error GoTo 0
+End Function?
